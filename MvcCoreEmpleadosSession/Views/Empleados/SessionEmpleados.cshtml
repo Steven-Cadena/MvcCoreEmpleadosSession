@@ -1,0 +1,33 @@
+﻿@model List<Empleado>
+
+<h1> Session Empleados</h1>
+
+<h2 style="color:blue">
+    @ViewData["MENSAJE"]
+</h2>
+
+<a class="btn btn-danger"
+   asp-controller="Empleados"
+   asp-action="EmpleadosAlmacenados">
+    Empleados almacenados Session
+</a>
+<br />
+<br />
+<br />
+
+<ul class="list-group">
+
+    @foreach (Empleado emp in Model)
+    {
+        <li class="list-group-item list-group-item-info">
+            @emp.Apellido
+            Empleados
+            <a asp-controller="Empleados"
+               asp-action="SessionEmpleados"
+               asp-route-idempleado="@emp.IdEmpleado"
+               class="btn btn-warning">
+                Almacenar empleado
+            </a>
+        </li>
+    }
+</ul>

@@ -21,5 +21,23 @@ namespace MvcCoreEmpleadosSession.Repositories
                            select datos;
             return consulta.ToList();
         }
+
+        //METODO PARA DEVOLVER UN EMPLEADO
+        public Empleado FindEmpleado(int idempleado) 
+        {
+            return this.context.Empleados.SingleOrDefault(x => x.IdEmpleado == idempleado);
+        }
+        //METODO PARA LA VERSION 3 
+        //RECIBIREMOS UNA COLECCION DE INT Y DEVOLVEMOS LA COLECCION DE EMPLEADOS
+        public List<Empleado> GetEmpleadosSession(List<int> idsEmpleados) 
+        {
+            //CUANDO UTILIZAMOS BUSQUEDA EN COLECCIONES SE UTILIZA EL METODO Contains
+            //contains muy importante, para comprobar si están en la bbdd esos id
+            var consulta = from datos in this.context.Empleados
+                           where idsEmpleados.Contains(datos.IdEmpleado)
+                           select datos;
+            return consulta.ToList();
+        } 
     }
+
 }
