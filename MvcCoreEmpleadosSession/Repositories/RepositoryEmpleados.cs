@@ -36,6 +36,11 @@ namespace MvcCoreEmpleadosSession.Repositories
             var consulta = from datos in this.context.Empleados
                            where idsEmpleados.Contains(datos.IdEmpleado)
                            select datos;
+            /*importante devolver null si no hay empleados en la session*/
+            if (consulta.Count() == 0)
+            {
+                return null;  
+            }
             return consulta.ToList();
         } 
     }

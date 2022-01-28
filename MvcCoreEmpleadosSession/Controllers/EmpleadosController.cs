@@ -107,18 +107,32 @@ namespace MvcCoreEmpleadosSession.Controllers
             return View(this.repo.GetEmpleados());
         }
 
-        public IActionResult EmpleadosAlmacenadosCorrecto() 
+        public IActionResult EmpleadosAlmacenadosCorrecto(int? ideliminar) 
         {
-            //preguntamos se esta creado la session con idsempleados
-            if (HttpContext.Session.GetString("IDSEMPLEADOS") == null)
+            List<int> listIdEmpleados =
+                    HttpContext.Session.GetObject<List<int>>("IDSEMPLEADOS");
+            //preguntamos si esta creado la session con idsempleados
+            if (listIdEmpleados == null)
             {
                 ViewData["MENSAJE"] = "No existen empleados almacenados.";
                 return View();
             }
             else 
             {
-                List<int> listIdEmpleados =
-                    HttpContext.Session.GetObject<List<int>>("IDSEMPLEADOS");
+                /*para el boton eliminar*/
+                if (ideliminar != null) 
+                {
+                    listIdEmpleados.Remove(ideliminar.Value);
+                    if (listIdEmpleados.Count == 0)
+                    {
+                        //HttpContext.Session.SetObject("IDSEMPLEADOS", null);
+                        HttpContext.Session.Remove("IDSEMPLEADOS");
+                    }
+                    else 
+                    {
+                        HttpContext.Session.SetObject("IDSEMPLEADOS", listIdEmpleados);
+                    }
+                }
                 //NECESITAMOS UN METODO EN EL REPO QUE LE ENVIAREMOS UNA COLECCION DE ID 
                 // Y NOS DEVOVLERA LOS EMPLEADOS
                 //NECESITAMOS UNA CONSULTA IN, DENTRO DE LINQ
@@ -126,6 +140,22 @@ namespace MvcCoreEmpleadosSession.Controllers
                     this.repo.GetEmpleadosSession(listIdEmpleados);
                 return View(empleados);
             }
+        }
+        [HttpPost]
+        public IActionResult EmpleadosAlmacenadosCorrecto(List<int> cantidad) 
+        {
+            List<int> cantidadEmpleados = cantidad;
+            HttpContext.Session.SetObject("CANTIDAD", cantidadEmpleados);
+            return RedirectToAction("DetalleFactura");
+        }
+
+        public IActionResult DetalleFactura() 
+        {
+            List<int> listIdEmpleados =
+                    HttpContext.Session.GetObject<List<int>>("IDSEMPLEADOS");
+            List<Empleado> empleados =
+                    this.repo.GetEmpleadosSession(listIdEmpleados);
+            return View(empleados);
         }
     }
 }

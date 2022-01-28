@@ -1,0 +1,66 @@
+﻿@model List<Empleado>
+
+@{
+    ViewData["Title"] = "EmpleadosAlmacenadosCorrecto";
+}
+
+<h1 style="color:blue">Empleados Almacenados Session</h1>
+
+@if (Context.Session.GetString("IDSEMPLEADOS") == null)
+{<h2 style="color:red">
+        No existen empleados en Session
+    </h2>
+
+}
+<h2 style="color:red">
+    @ViewData["MENSAJE"]
+</h2>
+
+<a asp-controller="Empleados"
+   asp-action="SessionEmpleadosCorrecto"
+   class="btn btn-danger">
+    Volver Almacenar Empleados
+</a>
+@if (Model != null)
+{
+    <form method="post">
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th>IdEmpleado</th>
+                    <th>Apellido</th>
+                    <th>Oficio</th>
+                    <th>Salario</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Empleado emp in Model)
+                {
+                    <tr>
+                        <td>@emp.IdEmpleado</td>
+                        <td>@emp.Apellido</td>
+                        <td>@emp.Oficio</td>
+                        <td>@emp.Salario</td>
+                        <td>
+                            <input type="number" name="cantidad" />
+                        </td>
+                        <td>
+                            <a asp-controller="Empleados"
+                               asp-action="EmpleadosAlmacenadosCorrecto"
+                               asp-route-ideliminar="@emp.IdEmpleado"
+                               class="btn btn-danger">
+                                Eliminar Session
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-success">
+            Comprar Empleados
+        </button>
+
+    </form>
+    
+}

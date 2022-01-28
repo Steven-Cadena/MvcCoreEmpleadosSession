@@ -3,6 +3,10 @@
     Empleados Session Correcto
 </h1>
 
+@{
+    List<int> listaSession =
+        Context.Session.GetObject<List<int>>("IDSEMPLEADOS");
+ }
 <a asp-controller="Empleados"
    asp-action="EmpleadosAlmacenadosCorrecto"
    class="btn btn-info">
@@ -16,14 +20,33 @@
 <ul class="list-group">
     @foreach (Empleado emp in Model) 
     {
-        <li class="list-group-item list-group-item-dark"> 
-            @emp.Apellido
+    <li class="list-group-item list-group-item-dark">
+        @emp.Apellido
+        @if (listaSession == null)
+        {
             <a asp-controller="Empleados"
                asp-action="SessionEmpleadosCorrecto"
                asp-route-idempleado="@emp.IdEmpleado"
                class="btn btn-info">
                 Almacenar Empleado
             </a>
-        </li>
+        }
+        else
+        {
+            if (listaSession.Contains(emp.IdEmpleado))
+            {
+                <img src="~/images/ferrari.jpg" style="width:150px;height:150px;"/>
+            }
+            else
+            { 
+                <a asp-controller="Empleados"
+                   asp-action="SessionEmpleadosCorrecto"
+                   asp-route-idempleado="@emp.IdEmpleado"
+                   class="btn btn-info">
+                    Almacenar Empleado
+                </a>
+            }
+        }
+    </li>
     }
 </ul>
