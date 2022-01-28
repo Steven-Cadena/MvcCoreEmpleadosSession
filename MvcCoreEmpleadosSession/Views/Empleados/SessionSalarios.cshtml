@@ -1,0 +1,10 @@
+﻿@model List<Empleado>
+
+<h1>Session Empleados Salario</h1>
+
+<ul class="list-group">
+    @foreach (Empleado emp in Model) 
+    { 
+        <li class="list-group-item">@emp.Apellido</li>
+    }
+</ul>
