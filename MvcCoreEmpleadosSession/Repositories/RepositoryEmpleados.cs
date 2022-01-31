@@ -27,6 +27,13 @@ namespace MvcCoreEmpleadosSession.Repositories
         {
             return this.context.Empleados.SingleOrDefault(x => x.IdEmpleado == idempleado);
         }
+
+        //empleado buscar
+        public Empleado BuscarEmpleado(string apellido) 
+        {
+            return this.context.Empleados.FirstOrDefault(x => x.Apellido == apellido);
+        }
+
         //METODO PARA LA VERSION 3 
         //RECIBIREMOS UNA COLECCION DE INT Y DEVOLVEMOS LA COLECCION DE EMPLEADOS
         public List<Empleado> GetEmpleadosSession(List<int> idsEmpleados) 

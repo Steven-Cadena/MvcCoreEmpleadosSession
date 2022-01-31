@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,15 +28,18 @@ namespace MvcCoreEmpleadosSession
         public void ConfigureServices(IServiceCollection services)
         {
             string cadenahospital = this.Configuration.GetConnectionString("cadenahospital");
+            string cadenahospitalcasa = this.Configuration.GetConnectionString("cadenahospitalcasa");
 
             //ACCESO A DATOS SQL SERVER *********************SQL SERVER
             services.AddTransient<RepositoryEmpleados>();
-            services.AddDbContext<EmpleadosContext>(options => options.UseSqlServer(cadenahospital));
+            services.AddDbContext<EmpleadosContext>(options => options.UseSqlServer(cadenahospitalcasa));
             /**********************************************************/
             //UNA SESSION FUNCIONA POR TIEMPO DE INACTIVIDAD
             //DEBEMOS INDICAR EL TIEMPO QUE DURARAN LOS OBJETOS 
             //DENTRO DE LA SESSION
             /****************************IMPORTANTE*/
+            services.AddHttpContextAccessor();
+            //services.AddSingleton<IHttpContextAccesor, HttpContextAccesor>();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {

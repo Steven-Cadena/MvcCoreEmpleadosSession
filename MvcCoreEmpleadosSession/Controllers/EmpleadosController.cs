@@ -142,20 +142,27 @@ namespace MvcCoreEmpleadosSession.Controllers
             }
         }
         [HttpPost]
-        public IActionResult EmpleadosAlmacenadosCorrecto(List<int> cantidad) 
+        public IActionResult EmpleadosAlmacenadosCorrecto(List<int> cantidades) 
         {
-            List<int> cantidadEmpleados = cantidad;
-            HttpContext.Session.SetObject("CANTIDAD", cantidadEmpleados);
+            //List<int> cantidadEmpleados = cantidad;
+            //HttpContext.Session.SetObject("CANTIDAD", cantidadEmpleados);
+            TempData.Put("PRODUCTOS", cantidades);
             return RedirectToAction("DetalleFactura");
         }
 
         public IActionResult DetalleFactura() 
         {
-            List<int> listIdEmpleados =
-                    HttpContext.Session.GetObject<List<int>>("IDSEMPLEADOS");
-            List<Empleado> empleados =
-                    this.repo.GetEmpleadosSession(listIdEmpleados);
-            return View(empleados);
+            List<int> idsempleados = HttpContext.Session.GetObject<List<int>>("IDSEMPLEADOS");
+            List<Empleado> emps = new List<Empleado>();
+            foreach (int i in idsempleados)
+            {
+                Empleado emp = this.repo.FindEmpleado(i);
+                emps.Add(emp);
+            }
+
+            ViewData["EMPLEADOS"] = emps;
+            var cants = TempData.Get<List<int>>("PRODUCTOS");
+            return View(cants);
         }
     }
 }

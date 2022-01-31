@@ -1,0 +1,16 @@
+﻿@{
+    List<int>
+    idsempleados = Context.Session.GetObject<List<int>>("IDSEMPLEADOS");
+}
+
+<h4 style="background-color:yellow">
+    @if (idsempleados == null)
+    {
+        <span>Empleados comprados: 0</span>
+    }
+    else 
+    {
+       <span> Empleados comprados: @idsempleados.Count</span>
+    }
+    
+</h4>
