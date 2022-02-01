@@ -32,7 +32,7 @@ namespace MvcCoreEmpleadosSession
 
             //ACCESO A DATOS SQL SERVER *********************SQL SERVER
             services.AddTransient<RepositoryEmpleados>();
-            services.AddDbContext<EmpleadosContext>(options => options.UseSqlServer(cadenahospitalcasa));
+            services.AddDbContext<EmpleadosContext>(options => options.UseSqlServer(cadenahospital));
             /**********************************************************/
             //UNA SESSION FUNCIONA POR TIEMPO DE INACTIVIDAD
             //DEBEMOS INDICAR EL TIEMPO QUE DURARAN LOS OBJETOS 
